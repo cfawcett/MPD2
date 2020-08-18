@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_large_triangles"
+    android:scaleType="fitCenter"
+    tools:context=".ThreeDayFragment">
+
+
+    <TextView
+        android:id="@+id/cityTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+
+
+        android:text="Glasgow"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="#000000"
+        android:textSize="20sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <ImageView
+        android:id="@+id/coldTempImage"
+        style="@style/coldTempImg"
+
+        android:layout_marginTop="16dp"
+        android:src="@drawable/coldtemp"
+        app:layout_constraintBottom_toBottomOf="@+id/windSpeed"
+        app:layout_constraintEnd_toStartOf="@+id/coldTempText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tempTitle" />
+
+    <ImageView
+        android:id="@+id/hotTempImage"
+
+        style="@style/hotTempImg"
+        android:src="@drawable/hottemp"
+
+        app:layout_constraintEnd_toStartOf="@+id/hotTempText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/coldTempText"
+        app:layout_constraintTop_toTopOf="@+id/coldTempImage" />
+
+
+    <ImageView
+        android:id="@+id/windArrow"
+        style="@style/windArrowImg"
+
+        android:src="@drawable/arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/hotTempImage"
+        app:layout_constraintEnd_toStartOf="@+id/windSpeed"
+        app:layout_constraintTop_toTopOf="@+id/hotTempImage" />
+
+
+
+
+
+    <TextView
+        android:id="@+id/day1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Monday, July 23rd"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cityTitle" />
+
+    <TextView
+        android:id="@+id/dayTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/light_rain"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/day1" />
+
+
+    <TextView
+        android:id="@+id/tempTitle"
+        style="@style/bodyTitles"
+
+        android:text="@string/temperature"
+        app:layout_constraintEnd_toEndOf="@+id/hotTempText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@+id/coldTempImage"
+        app:layout_constraintTop_toBottomOf="@+id/dayTitleText" />
+
+
+    <TextView
+        android:id="@+id/windTitle"
+        style="@style/bodyTitles"
+        android:text="Wind"
+
+
+        android:textSize="14sp"
+
+        app:layout_constraintEnd_toEndOf="@+id/windSpeed"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/windArrow"
+        app:layout_constraintTop_toBottomOf="@+id/dayTitleText" />
+
+
+    <TextView
+        android:id="@+id/coldTempText"
+        style="@style/tempTitle"
+        android:text="34°"
+        app:layout_constraintBottom_toBottomOf="@+id/coldTempImage"
+        app:layout_constraintEnd_toStartOf="@+id/hotTempImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/coldTempImage"
+        app:layout_constraintTop_toTopOf="@+id/coldTempImage" />
+
+
+    <TextView
+        android:id="@+id/hotTempText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="35°"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/hotTempImage"
+        app:layout_constraintStart_toEndOf="@+id/hotTempImage"
+        app:layout_constraintTop_toTopOf="@+id/hotTempImage" />
+
+    <TextView
+        android:id="@+id/windSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:text="31mph"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/windArrow"
+        app:layout_constraintBottom_toBottomOf="@id/windArrow" />
+
+    <TextView
+        android:id="@+id/day2Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+        android:text="Tuesday, July 24th"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hotTempImage" />
+
+
+
+
+    <ImageView
+        android:id="@+id/coldTempImage2"
+        android:src="@drawable/coldtemp"
+
+        app:layout_constraintEnd_toStartOf="@+id/coldTempText2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tempTitle2"
+        style="@style/coldTempImg" />
+
+    <ImageView
+        android:id="@+id/hotTempImage2"
+
+        android:src="@drawable/hottemp"
+        app:layout_constraintEnd_toStartOf="@+id/hotTempText2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/coldTempText2"
+        app:layout_constraintTop_toTopOf="@+id/coldTempImage2"
+        style="@style/hotTempImg" />
+
+
+    <ImageView
+        android:id="@+id/windArrow2"
+        android:src="@drawable/arrow"
+
+        app:layout_constraintEnd_toStartOf="@+id/windSpeed2"
+        app:layout_constraintTop_toBottomOf="@+id/windTitle2"
+        style="@style/windArrowImg" />
+
+
+
+
+    <TextView
+        android:id="@+id/day2TitleTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Moderate Rain"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/day2Title" />
+
+
+    <TextView
+        android:id="@+id/tempTitle2"
+        android:text="@string/temperature"
+
+        app:layout_constraintEnd_toEndOf="@+id/hotTempText2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@+id/coldTempImage2"
+        app:layout_constraintTop_toBottomOf="@+id/day2TitleTxt"
+        style="@style/bodyTitles" />
+
+
+    <TextView
+        android:id="@+id/windTitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#000000"
+        android:text="Wind"
+        android:textColor="#FFFFFF"
+
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/windSpeed2"
+        app:layout_constraintStart_toStartOf="@+id/windArrow2"
+        app:layout_constraintTop_toTopOf="@+id/tempTitle2" />
+
+    <TextView
+        android:id="@+id/coldTempText2"
+        android:text="24°"
+        app:layout_constraintBottom_toBottomOf="@+id/coldTempImage2"
+        app:layout_constraintEnd_toStartOf="@+id/hotTempImage2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/coldTempImage2"
+        app:layout_constraintTop_toTopOf="@+id/coldTempImage2"
+        style="@style/tempTitle" />
+
+
+    <TextView
+        android:id="@+id/hotTempText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="25°"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/hotTempImage2"
+        app:layout_constraintStart_toEndOf="@+id/hotTempImage2"
+        app:layout_constraintTop_toTopOf="@+id/hotTempImage2" />
+
+    <TextView
+        android:id="@+id/windSpeed2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:text="21mph"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+
+
+        app:layout_constraintBottom_toBottomOf="@+id/windArrow2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/windTitle2"
+        app:layout_constraintVertical_bias="0.538" />
+
+
+
+
+    <TextView
+        android:id="@+id/day3TitleTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Moderate Rain"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/day3Title" />
+
+
+    <TextView
+        android:id="@+id/tempTitle3"
+        android:text="@string/temperature"
+
+        app:layout_constraintEnd_toEndOf="@+id/hotTempText3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@+id/coldTempImage3"
+        app:layout_constraintTop_toBottomOf="@+id/day3TitleTxt"
+        style="@style/bodyTitles" />
+
+
+    <TextView
+        android:id="@+id/windTitle3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#000000"
+        android:text="Wind"
+        android:textColor="#FFFFFF"
+
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/windSpeed3"
+        app:layout_constraintStart_toStartOf="@+id/windArrow3"
+        app:layout_constraintTop_toTopOf="@+id/tempTitle3" />
+
+    <TextView
+        android:id="@+id/coldTempText3"
+        android:text="34°"
+        app:layout_constraintBottom_toBottomOf="@+id/coldTempImage3"
+        app:layout_constraintEnd_toStartOf="@+id/hotTempImage3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/coldTempImage3"
+        app:layout_constraintTop_toTopOf="@+id/coldTempImage3"
+        style="@style/tempTitle" />
+
+
+    <TextView
+        android:id="@+id/hotTempText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="35°"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/hotTempImage3"
+        app:layout_constraintStart_toEndOf="@+id/hotTempImage3"
+        app:layout_constraintTop_toTopOf="@+id/hotTempImage3" />
+
+    <TextView
+        android:id="@+id/windSpeed3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:text="31mph"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+
+
+        app:layout_constraintBottom_toBottomOf="@+id/windArrow3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/windTitle3"
+        app:layout_constraintVertical_bias="0.538" />
+
+
+
+    <TextView
+        android:id="@+id/day3Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+        android:text="Tuesday, July 24th"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hotTempImage2" />
+
+
+
+
+    <ImageView
+        android:id="@+id/coldTempImage3"
+        android:src="@drawable/coldtemp"
+
+        app:layout_constraintEnd_toStartOf="@+id/coldTempText3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tempTitle3"
+        style="@style/coldTempImg" />
+
+    <ImageView
+        android:id="@+id/hotTempImage3"
+
+        android:src="@drawable/hottemp"
+        app:layout_constraintEnd_toStartOf="@+id/hotTempText3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/coldTempText3"
+        app:layout_constraintTop_toTopOf="@+id/coldTempImage3"
+        style="@style/hotTempImg" />
+
+
+    <ImageView
+        android:id="@+id/windArrow3"
+        android:src="@drawable/arrow"
+
+        app:layout_constraintEnd_toStartOf="@+id/windSpeed3"
+        app:layout_constraintTop_toBottomOf="@+id/windTitle3"
+        style="@style/windArrowImg" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Previous"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button2" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>

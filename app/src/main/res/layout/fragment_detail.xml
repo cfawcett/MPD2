@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_large_triangles"
+    android:scaleType="fitCenter"
+    tools:context=".DetailFragment">
+
+    <ImageView
+        android:id="@+id/coldTempImage"
+        style="@style/coldTempImg"
+
+        android:src="@drawable/coldtemp"
+        app:layout_constraintBottom_toBottomOf="@+id/hotTempImage"
+        app:layout_constraintEnd_toStartOf="@+id/coldTempText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@+id/tempTitle"
+        app:layout_constraintTop_toTopOf="@+id/hotTempImage" />
+
+
+    <ImageView
+        android:id="@+id/hotTempImage"
+
+        style="@style/hotTempImg"
+        android:src="@drawable/hottemp"
+
+        app:layout_constraintBottom_toTopOf="@+id/view2"
+        app:layout_constraintEnd_toStartOf="@+id/hotTempText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/coldTempText"
+        app:layout_constraintTop_toBottomOf="@+id/tempTitle" />
+
+    <ImageView
+        android:id="@+id/windArrow"
+        style="@style/windArrowImg"
+
+        android:src="@drawable/arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/hotTempImage"
+        app:layout_constraintEnd_toStartOf="@+id/windSpeed"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/windTitle"
+        app:layout_constraintTop_toTopOf="@+id/hotTempImage" />
+
+
+    <TextView
+        android:id="@+id/cityTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+
+        android:text="Glasgow"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/day1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Monday, July 23rd"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cityTitle" />
+
+    <TextView
+        android:id="@+id/dayTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/light_rain"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/day1" />
+
+
+    <TextView
+        android:id="@+id/tempTitle"
+        style="@style/bodyTitles"
+
+        android:layout_marginTop="8dp"
+        android:text="@string/temperature"
+        app:layout_constraintBottom_toTopOf="@+id/hotTempImage"
+        app:layout_constraintEnd_toEndOf="@+id/hotTempText"
+        app:layout_constraintEnd_toStartOf="@+id/windTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/day1"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+
+    <TextView
+        android:id="@+id/windTitle"
+        style="@style/bodyTitles"
+        android:text="Wind"
+
+
+        android:textSize="14sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tempTitle"
+        app:layout_constraintTop_toTopOf="@+id/tempTitle" />
+
+
+    <TextView
+        android:id="@+id/coldTempText"
+        style="@style/tempTitle"
+        android:text="34°"
+        app:layout_constraintBottom_toBottomOf="@+id/coldTempImage"
+        app:layout_constraintEnd_toStartOf="@+id/hotTempImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/coldTempImage"
+        app:layout_constraintTop_toTopOf="@+id/coldTempImage" />
+
+
+    <TextView
+        android:id="@+id/hotTempText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="35°"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/hotTempImage"
+        app:layout_constraintEnd_toEndOf="@+id/tempTitle"
+        app:layout_constraintStart_toEndOf="@+id/hotTempImage"
+        app:layout_constraintTop_toTopOf="@+id/hotTempImage" />
+
+    <TextView
+        android:id="@+id/windSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="31mph"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+
+
+        app:layout_constraintBottom_toBottomOf="@id/windArrow"
+        app:layout_constraintEnd_toEndOf="@+id/windTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/windArrow"
+        app:layout_constraintTop_toTopOf="@+id/windArrow" />
+
+    <TextView
+        android:id="@+id/visibilityTitle"
+        style="@style/bodyTitles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Visibility"
+
+        app:layout_constraintBottom_toTopOf="@+id/visibilityData"
+        app:layout_constraintEnd_toStartOf="@+id/pressureTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+
+    <TextView
+        android:id="@+id/visibilityData"
+        style="@style/bodyData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="High"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/visibilityTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/visibilityTitle"
+        app:layout_constraintTop_toBottomOf="@+id/visibilityTitle" />
+
+    <TextView
+        android:id="@+id/pressureTitle"
+        style="@style/bodyTitles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pressure"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+
+        app:layout_constraintStart_toEndOf="@+id/visibilityTitle"
+
+        app:layout_constraintTop_toTopOf="@+id/visibilityTitle" />
+
+    <TextView
+        android:id="@+id/pressureData"
+        style="@style/bodyData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10808mb"
+        app:layout_constraintEnd_toEndOf="@+id/pressureTitle"
+        app:layout_constraintStart_toStartOf="@+id/pressureTitle"
+        app:layout_constraintTop_toBottomOf="@+id/pressureTitle" />
+
+    <TextView
+        android:id="@+id/humidityTitle"
+        style="@style/bodyTitles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Humidity"
+
+        app:layout_constraintBottom_toTopOf="@+id/humidityData"
+        app:layout_constraintEnd_toStartOf="@+id/uvTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+
+    <TextView
+        android:id="@+id/humidityData"
+        style="@style/bodyData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Humid"
+        app:layout_constraintBottom_toTopOf="@+id/view3"
+        app:layout_constraintEnd_toEndOf="@+id/humidityTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/humidityTitle"
+        app:layout_constraintTop_toBottomOf="@+id/humidityTitle" />
+
+    <TextView
+        android:id="@+id/uvTitle"
+        style="@style/bodyTitles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UV Risk"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/humidityTitle"
+
+        app:layout_constraintTop_toTopOf="@+id/humidityTitle" />
+
+    <TextView
+        android:id="@+id/uvData"
+        style="@style/bodyData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="high"
+        app:layout_constraintBottom_toBottomOf="@+id/humidityData"
+        app:layout_constraintEnd_toEndOf="@+id/uvTitle"
+        app:layout_constraintStart_toStartOf="@+id/uvTitle"
+        app:layout_constraintTop_toTopOf="@+id/humidityData" />
+
+    <TextView
+        android:id="@+id/pollutionTitle"
+        style="@style/bodyTitles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pollution"
+        app:layout_constraintBottom_toTopOf="@+id/pollutionData"
+        app:layout_constraintEnd_toEndOf="@+id/hotTempText"
+        app:layout_constraintEnd_toStartOf="@+id/sunriseTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/pollutionData"
+        style="@style/bodyData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Polluted"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/pollutionTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/pollutionTitle"
+        app:layout_constraintTop_toBottomOf="@+id/pollutionTitle" />
+
+    <TextView
+        android:id="@+id/sunriseTitle"
+        style="@style/bodyTitles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sunrise"
+        app:layout_constraintBottom_toTopOf="@+id/sunriseData"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/pollutionTitle"
+        app:layout_constraintTop_toBottomOf="@+id/view3"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/sunsetData"
+        style="@style/bodyData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="22:45"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/sunriseTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/sunriseTitle"
+        app:layout_constraintTop_toBottomOf="@+id/sunsetTitle" />
+
+    <TextView
+        android:id="@+id/sunsetTitle"
+        style="@style/bodyTitles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sunset"
+        app:layout_constraintBottom_toTopOf="@+id/sunsetData"
+        app:layout_constraintEnd_toEndOf="@+id/sunriseTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/sunriseTitle"
+        app:layout_constraintTop_toBottomOf="@+id/sunriseData" />
+
+    <TextView
+        android:id="@+id/sunriseData"
+        style="@style/bodyData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="06:45"
+        app:layout_constraintBottom_toTopOf="@+id/sunsetTitle"
+        app:layout_constraintEnd_toEndOf="@+id/sunriseTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/sunriseTitle"
+        app:layout_constraintTop_toBottomOf="@+id/sunriseTitle" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+
+        android:background="#FF0000FF"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FF0000FF"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <View
+
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FF0000FF"
+        app:layout_constraintTop_toTopOf="@+id/guideline4" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
+
+</android.support.constraint.ConstraintLayout>

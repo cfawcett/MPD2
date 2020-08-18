@@ -23,27 +23,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener
-{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView rawDataDisplay;
-    private String result = "";
+
     private Button startButton;
     // Traffic Scotland URLs
     //private String urlSource = "https://trafficscotland.org/rss/feeds/roadworks.aspx";
     //private String urlSource = "https://trafficscotland.org/rss/feeds/plannedroadworks.aspx";
-    private String urlSource = "https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/2643123";
+    private String urlSource = "https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/";
+
+    BlankViewModel mViewModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
-        startButton = (Button)findViewById(R.id.startButton);
+        rawDataDisplay = (TextView) findViewById(R.id.rawDataDisplay);
+        startButton = (Button) findViewById(R.id.startButton);
         startButton.setOnClickListener(this);
-        BlankViewModel mViewModel = ViewModelProviders.of(this).get(BlankViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(BlankViewModel.class);
         mViewModel.setStringText("Has this worked");
         if (findViewById(R.id.fragment_container) != null) {
 
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // Create a new Fragment to be placed in the activity layout
             ThreeDayFragment firstFragment = new ThreeDayFragment();
-
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
             firstFragment.setArguments(getIntent().getExtras());
@@ -65,40 +64,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, firstFragment).commit();
+
         }
 
 
-
-
-
-
-      
     }
 
-    public void onClick(View aview)
-    {
+    public void onClick(View aview) {
         startProgress();
     }
 
-    public void startProgress()
-    {
+    public void startProgress() {
         // Run network access on a separate thread;
-        new Thread(new Task(urlSource)).start();
+
+
+        new Thread(new Task(urlSource, mViewModel)).start();
     } //
 
     // Need separate thread to access the internet resource over network
     // Other neater solutions should be adopted in later iterations.
-    private class Task implements Runnable
-    {
+    private class Task implements Runnable {
         private String url;
 
-        public Task(String aurl)
-        {
+
+        public Task(String aurl, BlankViewModel mViewModel) {
             url = aurl;
+
+
         }
+
         @Override
-        public void run()
-        {
+        public void run() {
+            String[] urlLocation = {"2648579", "2643743", "5128581", "287286", "934154", "1185241"};
+
 
             URL aurl;
             URLConnection yc;
@@ -106,184 +104,181 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String inputLine = "";
 
 
-            Log.e("MyTag","in run");
+            Log.e("MyTag", "in run");
+            for (int p = 0; p < urlLocation.length; p++) {
+                String result = "";
 
-            try
-            {
-                Log.e("MyTag","in try");
-                aurl = new URL(url);
-                yc = aurl.openConnection();
-                in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-                //
-                // Throw away the first 2 header lines before parsing
+                try {
+                    Log.e("MyTag", "in try");
+                    aurl = new URL(url + urlLocation[p]);
+                    yc = aurl.openConnection();
+                    in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+                    //
+                    // Throw away the first 2 header lines before parsing
 
-                for(int x = 0;x<18;x++) {
-                    in.readLine();
-                }
-                //
-                //
-                //
-                System.out.println(result);
-                int counter = 0;
-                int testInt = 0;
-                while ((inputLine = in.readLine()) != null && counter < 27)
-                {
-                    String[] testDC = inputLine.split(":",2);
-                    System.out.println(Arrays.toString(testDC));
-                    if(testDC.length > 1) {
-                        if(testDC[0].toLowerCase().contains("dc") || testDC[0].toLowerCase().contains("georss")) {
-                            System.out.println("THIS HAS BEEN INTERCEPTED");
-                        }
-                        else {
-                            System.out.println("l" + testDC[0] + "m");
+                    for (int x = 0; x < 18; x++) {
+                        in.readLine();
+                    }
+                    //
+                    //
+                    //
+
+                    int counter = 0;
+                    int testInt = 0;
+                    while ((inputLine = in.readLine()) != null && counter < 27) {
+                        String[] testDC = inputLine.split(":", 2);
+
+                        if (testDC.length > 1) {
+                            if (testDC[0].toLowerCase().contains("dc") || testDC[0].toLowerCase().contains("georss")) {
+                                //System.out.println("THIS HAS BEEN INTERCEPTED");
+                            } else {
+                                //System.out.println("l" + testDC[0] + "m");
+                                result = result + inputLine;
+                                //Log.e("MyTag", testInt + " " + inputLine);
+                                testInt++;
+                            }
+                        } else {
+                            //System.out.println("LENGTH NOT TRIGGERED");
                             result = result + inputLine;
-                            Log.e("MyTag", testInt + " " + inputLine);
+                            //Log.e("MyTag", testInt + " " + inputLine);
                             testInt++;
                         }
+                        counter++;
                     }
-                    else {
-                        System.out.println("LENGTH NOT TRIGGERED");
-                        result = result + inputLine;
-                        Log.e("MyTag", testInt + " " + inputLine);
-                        testInt++;
-                    }
-                    counter++;
+                    in.close();
+                } catch (IOException ae) {
+                    //Log.e("MyTag", "ioexception");
                 }
-                in.close();
-            }
-            catch (IOException ae)
-            {
-                Log.e("MyTag", "ioexception");
-            }
 
-            //
-            // Now that you have the xml data you can parse it
-            //
+                //
+                // Now that you have the xml data you can parse it
+                //
 
-            // Now update the TextView to display raw XML data
-            // Probably not the best way to update TextView
-            // but we are just getting started !
-            System.out.println(result);
+                // Now update the TextView to display raw XML data
+                // Probably not the best way to update TextView
+                // but we are just getting started !
+                System.out.println(result);
 
-            ArrayList<DaySummary> daysList = null;
-            DaySummary dayHolder = null;
 
-            try {
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                DaySummary dayHolder = null;
 
-            factory.setNamespaceAware(true);
-                XmlPullParser xpp = factory.newPullParser();
 
-                xpp.setInput( new StringReader ( result ) );
-                int eventType = xpp.getEventType();
-                while (eventType != XmlPullParser.END_DOCUMENT) {
-                    if(eventType == XmlPullParser.START_DOCUMENT) {
-                        System.out.println("Start document");
-                        daysList = new ArrayList<DaySummary>();
-                    }
+                try {
+                    XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 
-                     else if(eventType == XmlPullParser.START_TAG) {
-                        System.out.println("Start tag "+xpp.getName());
+                    factory.setNamespaceAware(true);
+                    XmlPullParser xpp = factory.newPullParser();
 
-                        if (xpp.getName().equalsIgnoreCase("item")) {
-                            dayHolder = new DaySummary();
-                        }
-                        else if(xpp.getName().equalsIgnoreCase("title")) {
-                            String temp = xpp.nextText();
+                    xpp.setInput(new StringReader(result));
+                    int eventType = xpp.getEventType();
+                    while (eventType != XmlPullParser.END_DOCUMENT) {
+                        if (eventType == XmlPullParser.START_DOCUMENT) {
+                            System.out.println("Start document");
 
-                            dayHolder.setDayTitle(temp);
-                        }
+                        } else if (eventType == XmlPullParser.START_TAG) {
+                            //System.out.println("Start tag " + xpp.getName());
 
-                        else if(xpp.getName().equalsIgnoreCase("description")) {
+                            if (xpp.getName().equalsIgnoreCase("item")) {
+                                dayHolder = new DaySummary();
+                            } else if (xpp.getName().equalsIgnoreCase("title")) {
+                                String temp = xpp.nextText();
 
-                            String temp = xpp.nextText();
-                            System.out.println(temp);
-                            String[] seperated = temp.split(",");
-                            String[] seperated2;
-                            int i;
-                            for(i = 0; i < seperated.length; i++){
-                            System.out.println("This is the split string " + i + " and the text is " + seperated[i] );
-                                String[] temp2 = seperated[i].split(":",2);
-                                System.out.println(temp2[0]);
-                                switch (i) {
-                                    case 0:
-                                        dayHolder.setMaxTemp(temp2[1]);
-                                        break;
-                                    case 1:
-                                        dayHolder.setMinTemp(temp2[1]);
-                                        break;
-                                    case 2:
-                                        dayHolder.setWindDir(temp2[1]);
-                                        break;
-                                    case 3:
-                                        dayHolder.setWindSpeed(temp2[1]);
-                                        break;
-                                    case 4:
-                                        dayHolder.setVisibility(temp2[1]);
-                                        break;
-                                    case 5:
-                                        dayHolder.setPressure(temp2[1]);
-                                        break;
-                                    case 6:
-                                        dayHolder.setHumidity(temp2[1]);
-                                        break;
-                                    case 7:
-                                        dayHolder.setUvRisk(temp2[1]);
-                                        break;
-                                    case 8:
-                                        dayHolder.setPollution(temp2[1]);
-                                        break;
-                                    case 9:
-                                        dayHolder.setSunrise(temp2[1]);
-                                        break;
-                                    case 10:
-                                        dayHolder.setSunset(temp2[1]);
-                                        break;
-                                    default:
-                                        System.out.println("Error with " + temp2[0]);
+                                dayHolder.setDayTitle(temp);
+                            } else if (xpp.getName().equalsIgnoreCase("description")) {
+
+                                String temp = xpp.nextText();
+                                //System.out.println(temp);
+                                String[] seperated = temp.split(",");
+                                String[] seperated2;
+                                int i;
+                                for (i = 0; i < seperated.length; i++) {
+                                    //System.out.println("This is the split string " + i + " and the text is " + seperated[i]);
+                                    String[] temp2 = seperated[i].split(":", 2);
+                                    //System.out.println(temp2[0]);
+                                    switch (i) {
+                                        case 0:
+                                            dayHolder.setMaxTemp(temp2[1]);
+                                            break;
+                                        case 1:
+                                            dayHolder.setMinTemp(temp2[1]);
+                                            break;
+                                        case 2:
+                                            dayHolder.setWindDir(temp2[1]);
+                                            break;
+                                        case 3:
+                                            dayHolder.setWindSpeed(temp2[1]);
+                                            break;
+                                        case 4:
+                                            dayHolder.setVisibility(temp2[1]);
+                                            break;
+                                        case 5:
+                                            dayHolder.setPressure(temp2[1]);
+                                            break;
+                                        case 6:
+                                            dayHolder.setHumidity(temp2[1]);
+                                            break;
+                                        case 7:
+                                            dayHolder.setUvRisk(temp2[1]);
+                                            break;
+                                        case 8:
+                                            dayHolder.setPollution(temp2[1]);
+                                            break;
+                                        case 9:
+                                            dayHolder.setSunrise(temp2[1]);
+                                            break;
+                                        case 10:
+                                            dayHolder.setSunset(temp2[1]);
+                                            break;
+                                        default:
+                                            System.out.println("Error with " + temp2[0]);
+
+                                    }
 
                                 }
 
                             }
 
+
+                        } else if (eventType == XmlPullParser.END_TAG) {
+                            //System.out.println("End tag " + xpp.getName());
+                            if (xpp.getName().equalsIgnoreCase("item")) {
+                                mViewModel.addDay(dayHolder);
+                            }
+
+                        } else if (eventType == XmlPullParser.TEXT) {
+                            //System.out.println("Text " + xpp.getText());
+
+                        } else {
                         }
 
-
-                    } else if(eventType == XmlPullParser.END_TAG) {
-                        System.out.println("End tag "+xpp.getName());
-                        if(xpp.getName().equalsIgnoreCase("item")) {
-                            daysList.add(dayHolder);
-                        }
-
-                    } else if(eventType == XmlPullParser.TEXT) {
-                        System.out.println("Text "+xpp.getText());
-
+                        eventType = xpp.next();
                     }
-                    else{}
+                    System.out.println("End document");
 
-                    eventType = xpp.next();
-                }
-                System.out.println("End document");
-                Iterator i = daysList.iterator();
-                System.out.println("The ArrayList elements are:");
-                for (int b=0; b<3;b++){
-                    System.out.println(daysList.get(b).getDayTitle());
-                }
 
-            } catch (XmlPullParserException | IOException e) {
-                e.printStackTrace();
+                } catch (XmlPullParserException | IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(p);
             }
 
 
-            MainActivity.this.runOnUiThread(new Runnable()
-            {
-                public void run() {
-                    Log.d("UI thread", "I am the UI thread");
-                    rawDataDisplay.setText(result);
-                }
-            });
+            MainActivity.this.runOnUiThread(new Runnable() {
+                                                public void run() {
+                                                    Log.d("UI thread", "I am the UI thread");
+                                                    ThreeDayFragment firstFragment = (ThreeDayFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                                                    firstFragment.setText();
+
+                                                }
+                                            }
+
+            );
         }
 
     }
 
+    public void showDetails(int dayChoice) {
+        DetailFragment details = new DetailFragment();
+
+    }
 } // End of MainActivity

@@ -8,4 +8,48 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="bodyTitles">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold|italic</item>
+    </style>
+    <style name="bodyData">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle"></item>
+    </style>
+
+    <style name="coldTempImg">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:contentDescription">Minimum Temperature</item>
+    </style>
+
+    <style name="hotTempImg">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:contentDescription">Maximum Temperature</item>
+    </style>
+
+    <style name="windArrowImg">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:tint">#FFFFFF</item>
+    </style>
+
+    <style name="tempTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>
