@@ -1,5 +1,5 @@
 <resources>
-
+    <!-- CHRIS FAWCETT S1622925 -->
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -20,7 +20,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textStyle"></item>
+
     </style>
 
     <style name="coldTempImg">

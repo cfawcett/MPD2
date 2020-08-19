@@ -1,5 +1,7 @@
 package org.me.gcu.weathermpdcfaw;
 
+
+// CHRIS FAWCETT S1622925
 public class DaySummary {
 
 

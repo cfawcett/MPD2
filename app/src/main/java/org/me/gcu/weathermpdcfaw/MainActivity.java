@@ -1,50 +1,53 @@
 package org.me.gcu.weathermpdcfaw;
 
-
+// CHRIS FAWCETT S1622925
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
+import java.util.Calendar;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+public class MainActivity extends AppCompatActivity{
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView rawDataDisplay;
 
-    private Button startButton;
-    // Traffic Scotland URLs
-    //private String urlSource = "https://trafficscotland.org/rss/feeds/roadworks.aspx";
-    //private String urlSource = "https://trafficscotland.org/rss/feeds/plannedroadworks.aspx";
-    private String urlSource = "https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/";
 
-    BlankViewModel mViewModel;
 
+
+    private  String urlSource = "https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/";
+
+     DataViewModel mViewModel;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rawDataDisplay = (TextView) findViewById(R.id.rawDataDisplay);
-        startButton = (Button) findViewById(R.id.startButton);
-        startButton.setOnClickListener(this);
-        mViewModel = ViewModelProviders.of(this).get(BlankViewModel.class);
-        mViewModel.setStringText("Has this worked");
+
+        mViewModel = ViewModelProviders.of(this).get(DataViewModel.class);
         if (findViewById(R.id.fragment_container) != null) {
 
             // However, if we're being restored from a previous state,
@@ -62,223 +65,112 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             firstFragment.setArguments(getIntent().getExtras());
 
             // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, firstFragment).commit();
+
 
         }
 
+        ActionBar actionBar = getSupportActionBar(); // or getActionBar();
+        getSupportActionBar().setTitle("GCU Weather App"); // set the top title
 
-    }
 
-    public void onClick(View aview) {
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("intent_myaction");
+        this.registerReceiver(this.receiver, filter);
+
+        startAlarm(mViewModel.getC());
         startProgress();
+
+
+
+
+
+
+
+
+
     }
 
     public void startProgress() {
         // Run network access on a separate thread;
-
-
-        new Thread(new Task(urlSource, mViewModel)).start();
+        new Thread(new Task(this, urlSource, mViewModel)).start();
     } //
-
-    // Need separate thread to access the internet resource over network
-    // Other neater solutions should be adopted in later iterations.
-    private class Task implements Runnable {
-        private String url;
-
-
-        public Task(String aurl, BlankViewModel mViewModel) {
-            url = aurl;
-
-
-        }
-
-        @Override
-        public void run() {
-            String[] urlLocation = {"2648579", "2643743", "5128581", "287286", "934154", "1185241"};
-
-
-            URL aurl;
-            URLConnection yc;
-            BufferedReader in = null;
-            String inputLine = "";
-
-
-            Log.e("MyTag", "in run");
-            for (int p = 0; p < urlLocation.length; p++) {
-                String result = "";
-
-                try {
-                    Log.e("MyTag", "in try");
-                    aurl = new URL(url + urlLocation[p]);
-                    yc = aurl.openConnection();
-                    in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-                    //
-                    // Throw away the first 2 header lines before parsing
-
-                    for (int x = 0; x < 18; x++) {
-                        in.readLine();
-                    }
-                    //
-                    //
-                    //
-
-                    int counter = 0;
-                    int testInt = 0;
-                    while ((inputLine = in.readLine()) != null && counter < 27) {
-                        String[] testDC = inputLine.split(":", 2);
-
-                        if (testDC.length > 1) {
-                            if (testDC[0].toLowerCase().contains("dc") || testDC[0].toLowerCase().contains("georss")) {
-                                //System.out.println("THIS HAS BEEN INTERCEPTED");
-                            } else {
-                                //System.out.println("l" + testDC[0] + "m");
-                                result = result + inputLine;
-                                //Log.e("MyTag", testInt + " " + inputLine);
-                                testInt++;
-                            }
-                        } else {
-                            //System.out.println("LENGTH NOT TRIGGERED");
-                            result = result + inputLine;
-                            //Log.e("MyTag", testInt + " " + inputLine);
-                            testInt++;
-                        }
-                        counter++;
-                    }
-                    in.close();
-                } catch (IOException ae) {
-                    //Log.e("MyTag", "ioexception");
-                }
-
-                //
-                // Now that you have the xml data you can parse it
-                //
-
-                // Now update the TextView to display raw XML data
-                // Probably not the best way to update TextView
-                // but we are just getting started !
-                System.out.println(result);
-
-
-                DaySummary dayHolder = null;
-
-
-                try {
-                    XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-
-                    factory.setNamespaceAware(true);
-                    XmlPullParser xpp = factory.newPullParser();
-
-                    xpp.setInput(new StringReader(result));
-                    int eventType = xpp.getEventType();
-                    while (eventType != XmlPullParser.END_DOCUMENT) {
-                        if (eventType == XmlPullParser.START_DOCUMENT) {
-                            System.out.println("Start document");
-
-                        } else if (eventType == XmlPullParser.START_TAG) {
-                            //System.out.println("Start tag " + xpp.getName());
-
-                            if (xpp.getName().equalsIgnoreCase("item")) {
-                                dayHolder = new DaySummary();
-                            } else if (xpp.getName().equalsIgnoreCase("title")) {
-                                String temp = xpp.nextText();
-
-                                dayHolder.setDayTitle(temp);
-                            } else if (xpp.getName().equalsIgnoreCase("description")) {
-
-                                String temp = xpp.nextText();
-                                //System.out.println(temp);
-                                String[] seperated = temp.split(",");
-                                String[] seperated2;
-                                int i;
-                                for (i = 0; i < seperated.length; i++) {
-                                    //System.out.println("This is the split string " + i + " and the text is " + seperated[i]);
-                                    String[] temp2 = seperated[i].split(":", 2);
-                                    //System.out.println(temp2[0]);
-                                    switch (i) {
-                                        case 0:
-                                            dayHolder.setMaxTemp(temp2[1]);
-                                            break;
-                                        case 1:
-                                            dayHolder.setMinTemp(temp2[1]);
-                                            break;
-                                        case 2:
-                                            dayHolder.setWindDir(temp2[1]);
-                                            break;
-                                        case 3:
-                                            dayHolder.setWindSpeed(temp2[1]);
-                                            break;
-                                        case 4:
-                                            dayHolder.setVisibility(temp2[1]);
-                                            break;
-                                        case 5:
-                                            dayHolder.setPressure(temp2[1]);
-                                            break;
-                                        case 6:
-                                            dayHolder.setHumidity(temp2[1]);
-                                            break;
-                                        case 7:
-                                            dayHolder.setUvRisk(temp2[1]);
-                                            break;
-                                        case 8:
-                                            dayHolder.setPollution(temp2[1]);
-                                            break;
-                                        case 9:
-                                            dayHolder.setSunrise(temp2[1]);
-                                            break;
-                                        case 10:
-                                            dayHolder.setSunset(temp2[1]);
-                                            break;
-                                        default:
-                                            System.out.println("Error with " + temp2[0]);
-
-                                    }
-
-                                }
-
-                            }
-
-
-                        } else if (eventType == XmlPullParser.END_TAG) {
-                            //System.out.println("End tag " + xpp.getName());
-                            if (xpp.getName().equalsIgnoreCase("item")) {
-                                mViewModel.addDay(dayHolder);
-                            }
-
-                        } else if (eventType == XmlPullParser.TEXT) {
-                            //System.out.println("Text " + xpp.getText());
-
-                        } else {
-                        }
-
-                        eventType = xpp.next();
-                    }
-                    System.out.println("End document");
-
-
-                } catch (XmlPullParserException | IOException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(p);
-            }
-
-
-            MainActivity.this.runOnUiThread(new Runnable() {
-                                                public void run() {
-                                                    Log.d("UI thread", "I am the UI thread");
-                                                    ThreeDayFragment firstFragment = (ThreeDayFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                                                    firstFragment.setText();
-
-                                                }
-                                            }
-
-            );
-        }
-
-    }
 
     public void showDetails(int dayChoice) {
         DetailFragment details = new DetailFragment();
 
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+               transaction.replace(R.id.fragment_container, details);
+               transaction.addToBackStack(null);
+               transaction.commit();
+
+
+        }
+
+    public void returnDetails() {
+        ThreeDayFragment firstFragment = new ThreeDayFragment();
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, firstFragment);
+        transaction.commit();
+
+
     }
+
+    private void startAlarm(Calendar c) { // This is the system for allowing the data to be updated upon the time defined by the user (default 8pm)
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent("intent_myaction"); // Dynamically assigns the broadcast reciever for the alarmmanager
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
+    private BroadcastReceiver receiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+           startProgress();
+
+        }
+    };
+
+    public void onSettingsAction(MenuItem mi) {
+        // handle click here
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter the time for daily data updates (HH:MM)");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_DATETIME);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String dateText = input.getText().toString();
+                if (dateText.matches("..:..")) {
+                    String[] dateSplit = dateText.split(":", 2);
+                    int hour = Integer.parseInt(dateSplit[0]);
+                    int minute = Integer.parseInt(dateSplit[1]);
+                    Calendar c = Calendar.getInstance();
+                    c.set(Calendar.HOUR, hour);
+                    c.set(Calendar.MINUTE,minute);
+                    c.set(Calendar.SECOND,0);
+                    mViewModel.setC(c);
+
+                }
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
 } // End of MainActivity
