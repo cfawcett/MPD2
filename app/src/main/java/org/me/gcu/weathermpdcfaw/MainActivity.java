@@ -1,139 +1,176 @@
 package org.me.gcu.weathermpdcfaw;
 
-
+// CHRIS FAWCETT S1622925
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener
-{
-    private TextView rawDataDisplay;
-    private String result;
-    private Button startButton;
-    // Traffic Scotland URLs
-    //private String urlSource = "https://trafficscotland.org/rss/feeds/roadworks.aspx";
-    //private String urlSource = "https://trafficscotland.org/rss/feeds/plannedroadworks.aspx";
-    private String urlSource = "https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/2643123";
+public class MainActivity extends AppCompatActivity{
+
+
+
+
+
+    private  String urlSource = "https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/";
+
+     DataViewModel mViewModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
-        startButton = (Button)findViewById(R.id.startButton);
-        startButton.setOnClickListener(this);
 
+        mViewModel = ViewModelProviders.of(this).get(DataViewModel.class);
         if (findViewById(R.id.fragment_container) != null) {
 
             // However, if we're being restored from a previous state,
             // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
+            // we could end up
+            // with overlapping fragments.
             if (savedInstanceState != null) {
                 return;
             }
 
             // Create a new Fragment to be placed in the activity layout
-            BlankFragment firstFragment = new BlankFragment();
-
+            ThreeDayFragment firstFragment = new ThreeDayFragment();
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
             firstFragment.setArguments(getIntent().getExtras());
 
             // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, firstFragment).commit();
+
+
         }
 
+        ActionBar actionBar = getSupportActionBar(); // or getActionBar();
+        getSupportActionBar().setTitle("GCU Weather App"); // set the top title
 
 
-    }
 
-    public void onClick(View aview)
-    {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("intent_myaction");
+        this.registerReceiver(this.receiver, filter);
+
+        startAlarm(mViewModel.getC());
         startProgress();
+
+
+
+
+
+
+
+
+
     }
 
-    public void startProgress()
-    {
+    public void startProgress() {
         // Run network access on a separate thread;
-        new Thread(new Task(urlSource)).start();
+        new Thread(new Task(this, urlSource, mViewModel)).start();
     } //
 
-    // Need separate thread to access the internet resource over network
-    // Other neater solutions should be adopted in later iterations.
-    private class Task implements Runnable
-    {
-        private String url;
+    public void showDetails(int dayChoice) {
+        DetailFragment details = new DetailFragment();
 
-        public Task(String aurl)
-        {
-            url = aurl;
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+               transaction.replace(R.id.fragment_container, details);
+               transaction.addToBackStack(null);
+               transaction.commit();
+
+
         }
+
+    public void returnDetails() {
+        ThreeDayFragment firstFragment = new ThreeDayFragment();
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, firstFragment);
+        transaction.commit();
+
+
+    }
+
+    private void startAlarm(Calendar c) { // This is the system for allowing the data to be updated upon the time defined by the user (default 8pm)
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent("intent_myaction"); // Dynamically assigns the broadcast reciever for the alarmmanager
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
+    private BroadcastReceiver receiver = new BroadcastReceiver(){
         @Override
-        public void run()
-        {
+        public void onReceive(Context context, Intent intent) {
+           startProgress();
 
-            URL aurl;
-            URLConnection yc;
-            BufferedReader in = null;
-            String inputLine = "";
-
-
-            Log.e("MyTag","in run");
-
-            try
-            {
-                Log.e("MyTag","in try");
-                aurl = new URL(url);
-                yc = aurl.openConnection();
-                in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
-                //
-                // Throw away the first 2 header lines before parsing
-                //
-                //
-                //
-                while ((inputLine = in.readLine()) != null)
-                {
-                    result = result + inputLine;
-                    Log.e("MyTag",inputLine);
-
-                }
-                in.close();
-            }
-            catch (IOException ae)
-            {
-                Log.e("MyTag", "ioexception");
-            }
-
-            //
-            // Now that you have the xml data you can parse it
-            //
-
-            // Now update the TextView to display raw XML data
-            // Probably not the best way to update TextView
-            // but we are just getting started !
-
-            MainActivity.this.runOnUiThread(new Runnable()
-            {
-                public void run() {
-                    Log.d("UI thread", "I am the UI thread");
-                    rawDataDisplay.setText(result);
-                }
-            });
         }
+    };
 
+    public void onSettingsAction(MenuItem mi) {
+        // handle click here
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter the time for daily data updates (HH:MM)");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_DATETIME);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String dateText = input.getText().toString();
+                if (dateText.matches("..:..")) {
+                    String[] dateSplit = dateText.split(":", 2);
+                    int hour = Integer.parseInt(dateSplit[0]);
+                    int minute = Integer.parseInt(dateSplit[1]);
+                    Calendar c = Calendar.getInstance();
+                    c.set(Calendar.HOUR, hour);
+                    c.set(Calendar.MINUTE,minute);
+                    c.set(Calendar.SECOND,0);
+                    mViewModel.setC(c);
+
+                }
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
 } // End of MainActivity

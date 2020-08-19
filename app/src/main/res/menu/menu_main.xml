@@ -1,0 +1,15 @@
+<!-- Menu file for `activity_movies.xml` is located in a file
+     such as `res/menu/menu_movies.xml`  -->
+
+    <!-- CHRIS FAWCETT S1622925 -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/miProfile"
+        android:icon="@android:drawable/ic_menu_manage"
+        app:showAsAction="ifRoom|withText"
+        android:onClick="onSettingsAction"
+        android:title="Settings">
+    </item>
+</menu>

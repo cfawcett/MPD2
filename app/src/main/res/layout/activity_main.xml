@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- MPD XML Starter code Semester B Session 2018 2019 -->
+<!-- CHRIS FAWCETT S1622925 -->
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,28 +10,17 @@
     android:layout_height="fill_parent">
 
 
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="72dp"
-        android:text="Press to get data"
+
+
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_marginEnd="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="58dp" />
-
-    <TextView
-        android:id="@+id/rawDataDisplay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Raw Data is Displayed here"
-        android:textSize="20sp"
-        tools:layout_editor_absoluteX="41dp"
-        tools:layout_editor_absoluteY="16dp" />
-
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+        tools:layout_editor_absoluteY="217dp" />
 
 
 </android.support.constraint.ConstraintLayout>
